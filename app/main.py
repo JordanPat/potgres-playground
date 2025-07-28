@@ -47,6 +47,7 @@
 #     df = pd.DataFrame(data=data1)
 #     df.to_sql()
 
+import os
 import pandas as pd
 
 from pg_manager import PostgresHandler
@@ -54,6 +55,11 @@ from pg_manager import PostgresHandler
 
 if __name__ == "__main__":
     print("__main__ running...")
+    pg_host = os.getenv("POSTGRES_HOST", "postgres-service")
+    pg_port = os.getenv("POSTGRES_PORT", "5432")
+    pg_user = os.getenv("POSTGRES_USER", "user")
+    pg_password = os.getenv("POSTGRES_PASSWORD", "password")
+    pg_db = os.getenv("POSTGRES_DB", "dev_db")
     data1 = {
         "id":[1,2,3,4,5],
         "data": [
@@ -67,7 +73,7 @@ if __name__ == "__main__":
     }
     df = pd.DataFrame(data1)
 
-    pg_handler = PostgresHandler()
+    pg_handler = PostgresHandler(pg_host, pg_port, pg_user, pg_password, pg_db)
     pg_handler.test_connection()
     pg_handler.insert_dataframe(df, "test_table")
     print("insertion complete...")
