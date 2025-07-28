@@ -1,6 +1,6 @@
-import pandas as pd
 import os
-from sqlalchemy import create_engine
+import pandas as pd
+from sqlalchemy import create_engine, text
 
 
 class PostgresHandler:
@@ -21,9 +21,9 @@ class PostgresHandler:
             self.db_host = pg_host
             self.db_port = pg_port
             self.db_name = pg_db
-        print("db variables:",self.db_host, self.db_port, self.db_user, self.db_password, self.db_name)
+        print("[__init__]db variables:",self.db_host, self.db_port, self.db_user, self.db_password, self.db_name)
         self.connection_string = f"postgresql://{self.db_user}:{self.db_password}@{self.db_host}:{self.db_port}/{self.db_name}"
-        print("connection_string:", self.connection_string)
+        print("[__init__]connection_string:", self.connection_string)
         # Create SQLAlchemy engine for PostgreSQL connection
         self.engine = create_engine(
             self.connection_string)
@@ -37,7 +37,7 @@ class PostgresHandler:
         try:
             with self.engine.connect() as conn:
                 result = conn.execute(
-                    "SELECT table_name FROM information_schema.tables WHERE table_schema='public';"
+                    text("SELECT table_name FROM information_schema.tables WHERE table_schema='public';")
                 )
                 tables = [row[0] for row in result]
                 print("Hello World! Connected to PostgreSQL successfully.")

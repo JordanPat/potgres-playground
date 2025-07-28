@@ -60,6 +60,7 @@ if __name__ == "__main__":
     pg_user = os.getenv("POSTGRES_USER", "user")
     pg_password = os.getenv("POSTGRES_PASSWORD", "password")
     pg_db = os.getenv("POSTGRES_DB", "dev_db")
+    print("[__main__]db variables:", pg_host, pg_port, pg_user, pg_password, pg_db)
     data1 = {
         "id":[1,2,3,4,5],
         "data": [
