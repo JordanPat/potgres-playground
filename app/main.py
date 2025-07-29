@@ -47,6 +47,7 @@
 #     df = pd.DataFrame(data=data1)
 #     df.to_sql()
 
+import json
 import os
 import pandas as pd
 
@@ -63,19 +64,35 @@ if __name__ == "__main__":
     print("[__main__]db variables:", pg_host, pg_port, pg_user, pg_password, pg_db)
     data1 = {
         "id":[1,2,3,4,5],
-        "data": [
-            ["listitem1","listitem2","listitem3"],
-            ["li1","li1","li1"],
-            ["li2","li2","li2"],
-            ["li3","li3","li3"],
-            ["li4","li4","li4"],
+        "data":[
+            {"item": "value1"},
+            {"item": "value2"},
+            {"item": "value3"},
+            {"item": "value4"},
+            {"item": "value5"},
         ],
         "name": ["john1", "john2", "john3", "john4", "john5"]
     }
-    df = pd.DataFrame(data1)
+    data2 = {
+    "id": [1, 2, 3, 4, 5],
+    "data": [
+        {"item": "value1"},
+        {"item": "value2"},
+        {"item": "value3"},
+        {"item": "value4"},
+        {"item": "value5"},
+    ],
+    "name": ["john1", "john2", "john3", "john4", "john5"]
+    }
+
+    df1 = pd.DataFrame(data1)
+    df1["data"] = df1["data"].apply(json.dumps)
+    
+    df2 = pd.DataFrame(data2)
+    df2["data"] = df2["data"].apply(json.dumps)
 
     pg_handler = PostgresHandler(pg_host, pg_port, pg_user, pg_password, pg_db)
     pg_handler.test_connection()
-    pg_handler.insert_dataframe(df, "test_table")
+    pg_handler.insert_dataframe(df1, "test_table")
     print("insertion complete...")
 
